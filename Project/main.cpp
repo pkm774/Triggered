@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <stdlib.h>
 #include "MemMan.h"
+#include "Offsets.h"
 //#include <d3d9.h>
 //#include <d3dx9.h>
 
@@ -68,28 +69,6 @@ string GlowESP_status = "\033[31m[OFF]";
 string ESP_status = "\033[31m[OFF]";
 string Aimbot_status = "\033[31m[OFF]";
 string Bunnyhop_status = "\033[31m[OFF]";
-
-struct offsets
-{
-	DWORD dwLocalPlayer = 0xDA244C; // MAY BE OUTDATED
-	DWORD dwEntityList = 0x4DBC5B4; // MAY BE OUTDATED
-	DWORD dwViewMatrix = 0x4DADEB4; // MAY BE OUTDATED
-	DWORD dwForceAttack = 0x31ECB34; // MAY BE OUTDATED
-	DWORD dwGlowObjectManager = 0x5304AC0; // MAY BE OUTDATED
-	DWORD dwRadarBase = 0x51F132C; // MAY BE OUTDATED
-	DWORD dwClientState = 0x588FEC; // MAY BE OUTDATED
-	DWORD dwClientState_PlayerInfo = 0x52C0; // MAY BE OUTDATED
-	DWORD ForceJump = 0x52663C4; // MAY BE OUTDATED
-	DWORD m_dwBoneMatrix = 0x26A8; // MAY BE OUTDATED
-	DWORD m_bDormant = 0xED; // MAY BE OUTDATED
-	DWORD m_iGlowIndex = 0x10488; // MAY BE OUTDATED
-	DWORD m_iTeamNum = 0xF4; // MAY BE OUTDATED
-	DWORD m_iHealth = 0x100; // MAY BE OUTDATED
-	DWORD m_vecOrigin = 0x138; // MAY BE OUTDATED
-	DWORD m_vecViewOffset = 0x108; // MAY BE OUTDATED
-	DWORD m_iCrosshairId = 0x11438; // MAY BE OUTDATED
-	DWORD m_fFlags = 0x104; // MAY BE OUTDATED
-} offset;
 
 struct variables
 {
@@ -403,9 +382,9 @@ void BhopThread() {
 			DWORD onGround = MemClass.readMem<DWORD>(player + offset.m_fFlags);
 
 			if (player && onGround == 257) {
-				MemClass.writeMem<int>(val.clientModule + offset.ForceJump, 5);
+				MemClass.writeMem<int>(val.clientModule + offset.dwForceJump, 5);
 				Sleep(10);
-				MemClass.writeMem<int>(val.clientModule + offset.ForceJump, 4);
+				MemClass.writeMem<int>(val.clientModule + offset.dwForceJump, 4);
 			}
 		}
 	}
