@@ -3,18 +3,10 @@
 #include <stdlib.h>
 #include "MemMan.h"
 #include "Offsets.h"
-//#include <d3d9.h>
-//#include <d3dx9.h>
-
-//#pragma comment(lib, "d3d9.lib")
-//#pragma comment(lib, "d3dx9.lib")
 
 using namespace std;
 
 MemMan MemClass;
-
-//typedef interface ID3DXFont ID3DXFont;
-//typedef interface ID3DXFont* LPD3DXFONT;
 
 typedef DWORD D3DCOLOR;
 
@@ -367,9 +359,9 @@ void TriggerbotThread() {
 			DWORD enemyHealth = MemClass.readMem<DWORD>(getTeam + offset.m_iTeamNum);
 
 
-			if (inCross > 0 && inCross < 64 && crosshairTeam != myTeam) {
+			if ((inCross > 0 && inCross < 64) && (crosshairTeam != myTeam)) {
 				MemClass.writeMem<int>(val.clientModule + offset.dwForceAttack, 6);
-				Sleep(200);
+				Sleep(100);
 			}
 		}
 	}
@@ -518,12 +510,10 @@ int main()
 
 				if (screenpos.z >= 0.01f && team != localTeam && health > 0 && health < 101 ) {
 					DrawBorderBox(screenpos.x - (width / 2), screenpos.y, width, height, 2, "enemy");
-					//DrawLine(screenX / 2, screenY, screenpos.x, screenpos.y, "enemy");
 				}
 
 				if (screenpos.z >= 0.01f && team == localTeam && health > 0 && health < 101) {
 					DrawBorderBox(screenpos.x - (width / 2), screenpos.y, width, height, 2, "teammate");
-					//DrawLine(screenX / 2, screenY, screenpos.x, screenpos.y, "teammate");
 				}
 			}
 		}
@@ -532,11 +522,6 @@ int main()
 		if (Aimbot) {
 			vm = MemClass.readMem<view_matrix_t>(val.clientModule + offset.dwViewMatrix);
 			Vector3 closestw2shead = WorldToScreen(get_head(GetPlayer(closest)), vm);
-			//DrawLine(xhairx, xhairy, closestw2shead.x, closestw2shead.y); //optinal for debugging
-			//float height = closestw2shead.y - closestw2shead.y;
-			//float width = height / 2.4f;
-			//DrawBorderBox(closestw2shead.x - (width / 3), closestw2shead.y, width, height, 150, "enemy"); // Drawing red box on enemy's head
-
 
 			if (GetAsyncKeyState(VK_MENU) && closestw2shead.z >= 0.001f)
 				SetCursorPos(closestw2shead.x, closestw2shead.y);
