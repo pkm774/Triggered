@@ -64,8 +64,8 @@ string Bunnyhop_status = "\033[31m[OFF]";
 
 struct variables
 {
-	DWORD clientModule;
-	DWORD engineModule;
+	DWORD clientModule = 0;
+	DWORD engineModule = 0;
 
 	float version = 2.0; // PROGRAM VERSION
 } val;
@@ -196,7 +196,7 @@ void DrawBorderBox(int x, int y, int w, int h, int thickness, string player)
 	DrawFilledRect(x, y + h, w + thickness, thickness, player); //bottom horiz line
 }
 
-void DrawLine(float StartX, float StartY, float EndX, float EndY, string player)
+void DrawLine(int StartX, int StartY, int EndX, int EndY, string player)
 {
 	int a, b = 0;
 	HPEN hOPen;
@@ -213,7 +213,7 @@ void DrawLine(float StartX, float StartY, float EndX, float EndY, string player)
 	DeleteObject(SelectObject(hdc, hOPen));
 }
 
-int getTeam(uintptr_t player) {
+int getTeam(DWORD player) {
 	return MemClass.readMem<int>(player + offset.m_iTeamNum);
 }
 
@@ -225,19 +225,19 @@ uintptr_t GetPlayer(int index) {  //Each player has an index. 1-64
 	return MemClass.readMem< uintptr_t>(val.clientModule + offset.dwEntityList + index * 0x10); //We multiply the index by 0x10 to select the player we want in the entity list.
 }
 
-int GetPlayerHealth(uintptr_t player) {
+int GetPlayerHealth(DWORD player) {
 	return MemClass.readMem<int>(player + offset.m_iHealth);
 }
 
-Vector3 PlayerLocation(uintptr_t player) { //Stores XYZ coordinates in a Vector3.
+Vector3 PlayerLocation(DWORD player) { //Stores XYZ coordinates in a Vector3.
 	return MemClass.readMem<Vector3>(player + offset.m_vecOrigin);
 }
 
-bool DormantCheck(uintptr_t player) {
+bool DormantCheck(DWORD player) {
 	return MemClass.readMem<int>(player + offset.m_bDormant);
 }
 
-Vector3 get_head(uintptr_t player) {
+Vector3 get_head(DWORD player) {
 	struct boneMatrix_t {
 		byte pad3[12];
 		float x;
@@ -246,7 +246,7 @@ Vector3 get_head(uintptr_t player) {
 		byte pad2[12];
 		float z;
 	};
-	uintptr_t boneBase = MemClass.readMem<uintptr_t>(player + offset.m_dwBoneMatrix);
+	DWORD boneBase = MemClass.readMem<DWORD>(player + offset.m_dwBoneMatrix);
 	boneMatrix_t boneMatrix = MemClass.readMem<boneMatrix_t>(boneBase + (sizeof(boneMatrix) * 8 /*8 is the boneid for head*/));
 	return Vector3(boneMatrix.x, boneMatrix.y, boneMatrix.z);
 }
@@ -489,7 +489,7 @@ int main()
 			{
 				//getName(i);
 
-				uintptr_t pEnt = MemClass.readMem<DWORD>(val.clientModule + offset.dwEntityList + (i * 0x10));
+				DWORD pEnt = MemClass.readMem<DWORD>(val.clientModule + offset.dwEntityList + (i * 0x10));
 
 				int health = MemClass.readMem<int>(pEnt + offset.m_iHealth);
 				int team = MemClass.readMem<int>(pEnt + offset.m_iTeamNum);
@@ -501,8 +501,8 @@ int main()
 				head.z = pos.z + 75.f;
 				Vector33 screenpos = WorldToScreenESP(pos, vm);
 				Vector33 screenhead = WorldToScreenESP(head, vm);
-				float height = screenhead.y - screenpos.y;
-				float width = height / 2.4f;
+				int height = screenhead.y - screenpos.y;
+				int width = height / 2.4f;
 
 				DWORD Entity = GetPlayer(i);
 				int EnmHealth = GetPlayerHealth(Entity); if (EnmHealth < 1 || EnmHealth > 100) continue;
