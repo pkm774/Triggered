@@ -45,8 +45,8 @@ int rectt = GetClientRect(hwnd, &rect);
 int screenX = rect.right - rect.left;
 int screenY = rect.bottom - rect.top;
 
-const int SCREEN_WIDTH = GetSystemMetrics(SM_CXSCREEN); const int xhairx = SCREEN_WIDTH / 2;
-const int SCREEN_HEIGHT = GetSystemMetrics(SM_CYSCREEN); const int xhairy = SCREEN_HEIGHT / 2;
+const float SCREEN_WIDTH = GetSystemMetrics(SM_CXSCREEN); const float xhairx = SCREEN_WIDTH / 2;
+const float SCREEN_HEIGHT = GetSystemMetrics(SM_CYSCREEN); const float xhairy = SCREEN_HEIGHT / 2;
 
 int closest;
 
@@ -501,8 +501,8 @@ int main()
 				head.z = pos.z + 75.f;
 				Vector33 screenpos = WorldToScreenESP(pos, vm);
 				Vector33 screenhead = WorldToScreenESP(head, vm);
-				int height = screenhead.y - screenpos.y;
-				int width = height / 2.4f;
+				float height = screenhead.y - screenpos.y;
+				float width = height / 2.4f;
 
 				DWORD Entity = GetPlayer(i);
 				int EnmHealth = GetPlayerHealth(Entity); if (EnmHealth < 1 || EnmHealth > 100) continue;
