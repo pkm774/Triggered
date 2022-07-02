@@ -143,7 +143,7 @@ struct offsets
 	DWORD dwZoomSensitivityRatioPtr = 0xDCB620;
 	DWORD dwbSendPackets = 0xD8422;
 	DWORD dwppDirect3DDevice9 = 0xA6050;
-	DWORD find_hud_element = 0x2A1859D0;
+	DWORD find_hud_element = 0x29AF59D0;
 	DWORD force_update_spectator_glow = 0x3BDCEA;
 	DWORD interface_engine_cvar = 0x3EA3C;
 	DWORD is_c4_owner = 0x3CAD70;
